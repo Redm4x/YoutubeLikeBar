@@ -30,33 +30,37 @@ function Request(VideoID, Elem, callback)
     };
 
     var URL = "https://gdata.youtube.com/feeds/api/videos/"+VideoID+"?v=2&alt=json";
-    console.log(URL);
     xhr.open("GET", URL, true);
 	xhr.send(null);
 }
 
-var Videos = document.getElementsByClassName('related-video');
-for(var i = 0 ; i < Videos.length ; i++)
+if(document.getElementsByClassName('YoutubeLikeBar').length != 0)
+    alert("YoutubeLikeBar à déjà été utilisé sur cette page");
+else
 {
-	var Elem = Videos[i];
-	var URL = Elem.getAttribute('href');
-	var URLBegin = '/watch?v=';
-	var VideoID = URL.substr(URLBegin.length);
-	Request(VideoID, Elem, function(rep, Elem){
-		if(rep == null) return;
+    var Videos = document.getElementsByClassName('related-video');
+    for(var i = 0 ; i < Videos.length ; i++)
+    {
+    	var Elem = Videos[i];
+    	var URL = Elem.getAttribute('href');
+    	var URLBegin = '/watch?v=';
+    	var VideoID = URL.substr(URLBegin.length);
+    	Request(VideoID, Elem, function(rep, Elem){
+    		if(rep == null) return;
 
-		var StatsElem = rep['entry']['yt$rating'];
-		var LikeCount = parseInt(StatsElem['numLikes']);
-		var DislikeCount = parseInt(StatsElem['numDislikes']);
-		var TotalRateCount = LikeCount + DislikeCount;
-		var LikePourcent = Math.round(LikeCount * 100 / TotalRateCount);
-		var DislikePourcent = 100 - LikePourcent;
+    		var StatsElem = rep['entry']['yt$rating'];
+    		var LikeCount = parseInt(StatsElem['numLikes']);
+    		var DislikeCount = parseInt(StatsElem['numDislikes']);
+    		var TotalRateCount = LikeCount + DislikeCount;
+    		var LikePourcent = Math.round(LikeCount * 100 / TotalRateCount);
+    		var DislikePourcent = 100 - LikePourcent;
 
-		var NewElem = document.createElement('span');
+    		var NewElem = document.createElement('span');
+            NewElem.className = "YoutubeLikeBar";
 
-		NewElem.innerHTML += '<span style="height: 3px; float: left; background-color: green; width: '+LikePourcent+'%;"></span>';
-		NewElem.innerHTML += '<span style="height: 3px; float: left; background-color: red; width: '+DislikePourcent+'%;"></span>';
-		Elem.appendChild(NewElem);
-	});
+    		NewElem.innerHTML += '<span style="height: 3px; float: left; background-color: green; width: '+LikePourcent+'%;"></span>';
+    		NewElem.innerHTML += '<span style="height: 3px; float: left; background-color: red; width: '+DislikePourcent+'%;"></span>';
+    		Elem.appendChild(NewElem);
+    	});
+    }
 }
-
