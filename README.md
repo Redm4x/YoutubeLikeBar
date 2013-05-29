@@ -21,4 +21,4 @@ Créez un Marque Page et comme adresse entrez le code si dessous :
 Utilisation
 -------
 
-Lorsque vous écoutez un vidéo et voulez ajouté une LikeBar à coté des suggestions de vidéo, cliquez sur le Marque Page.
+Lorsque vous écoutez un vidéo, cliquez sur le Marque Page pour ajouter une LikeBar à coté des suggestions de vidéo
