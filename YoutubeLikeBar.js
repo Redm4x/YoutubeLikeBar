@@ -19,13 +19,13 @@ function getXMLHttpRequest()
     return xhr;
 }
 
-function Request(VideoID, Elem, callback)
+function Request(VideoID, NewElem, callback)
 {
 	var xhr = getXMLHttpRequest();
 
 	xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-            callback(JSON.parse(xhr.responseText), Elem);
+            callback(JSON.parse(xhr.responseText), NewElem);
         }
     };
 
@@ -45,7 +45,11 @@ else
     	var URL = Elem.getAttribute('href');
     	var URLBegin = '/watch?v=';
     	var VideoID = URL.substr(URLBegin.length);
-    	Request(VideoID, Elem, function(rep, Elem){
+
+        var NewElem = document.createElement('span');
+        Elem.appendChild(NewElem);
+
+    	Request(VideoID, NewElem, function(rep, NewElem){
     		if(rep == null) return;
 
     		var StatsElem = rep['entry']['yt$rating'];
@@ -55,12 +59,11 @@ else
     		var LikePourcent = Math.round(LikeCount * 100 / TotalRateCount);
     		var DislikePourcent = 100 - LikePourcent;
 
-    		var NewElem = document.createElement('span');
             NewElem.className = "YoutubeLikeBar";
 
     		NewElem.innerHTML += '<span style="height: 3px; float: left; background-color: green; width: '+LikePourcent+'%;"></span>';
     		NewElem.innerHTML += '<span style="height: 3px; float: left; background-color: red; width: '+DislikePourcent+'%;"></span>';
-    		Elem.appendChild(NewElem);
+    		
     	});
     }
 }
