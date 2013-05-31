@@ -34,14 +34,34 @@ function Request(VideoID, NewElem, callback)
 	xhr.send(null);
 }
 
+function AddBar(VideoID, NewElem)
+{
+    Request(VideoID, NewElem, function(rep, NewElem){
+        if(rep == null) return;
+
+        var StatsElem = rep['entry']['yt$rating'];
+        var LikeCount = parseInt(StatsElem['numLikes']);
+        var DislikeCount = parseInt(StatsElem['numDislikes']);
+        var TotalRateCount = LikeCount + DislikeCount;
+        var LikePourcent = Math.round(LikeCount * 100 / TotalRateCount);
+        var DislikePourcent = 100 - LikePourcent;
+
+        NewElem.className = "YoutubeLikeBar";
+
+        NewElem.innerHTML += '<span style="height: 3px; float: left; background-color: green; width: '+LikePourcent+'%;"></span>';
+        NewElem.innerHTML += '<span style="height: 3px; float: left; background-color: red; width: '+DislikePourcent+'%;"></span>';
+    });
+}
+
 if(document.getElementsByClassName('YoutubeLikeBar').length != 0)
     alert("YoutubeLikeBar à déjà été utilisé sur cette page");
 else
 {
-    var Videos = document.getElementsByClassName('related-video');
-    for(var i = 0 ; i < Videos.length ; i++)
+    var RelatedVideos = document.getElementsByClassName('related-video');
+    
+    for(var i = 0 ; i < RelatedVideos.length ; i++)
     {
-    	var Elem = Videos[i];
+    	var Elem = RelatedVideos[i];
     	var URL = Elem.getAttribute('href');
     	var URLBegin = '/watch?v=';
     	var VideoID = URL.substr(URLBegin.length);
@@ -49,21 +69,18 @@ else
         var NewElem = document.createElement('span');
         Elem.appendChild(NewElem);
 
-    	Request(VideoID, NewElem, function(rep, NewElem){
-    		if(rep == null) return;
+        AddBar(VideoID, NewElem);
+    }
 
-    		var StatsElem = rep['entry']['yt$rating'];
-    		var LikeCount = parseInt(StatsElem['numLikes']);
-    		var DislikeCount = parseInt(StatsElem['numDislikes']);
-    		var TotalRateCount = LikeCount + DislikeCount;
-    		var LikePourcent = Math.round(LikeCount * 100 / TotalRateCount);
-    		var DislikePourcent = 100 - LikePourcent;
+    var SearchResults = document.getElementsByClassName('yt-lockup2-video');
+    for(var i = 0 ; i < SearchResults.length ; i++)
+    {
+        var Elem = SearchResults[i];
+        var VideoID = Elem.getAttribute('data-context-item-id');
 
-            NewElem.className = "YoutubeLikeBar";
+        var NewElem = document.createElement('span');
+        Elem.appendChild(NewElem);
 
-    		NewElem.innerHTML += '<span style="height: 3px; float: left; background-color: green; width: '+LikePourcent+'%;"></span>';
-    		NewElem.innerHTML += '<span style="height: 3px; float: left; background-color: red; width: '+DislikePourcent+'%;"></span>';
-    		
-    	});
+        AddBar(VideoID, NewElem);
     }
 }
