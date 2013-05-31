@@ -19,7 +19,7 @@ function getXMLHttpRequest()
     return xhr;
 }
 
-function Request(VideoID, NewElem, callback)
+function AjaxRequest(VideoID, NewElem, callback)
 {
 	var xhr = getXMLHttpRequest();
 
@@ -34,9 +34,9 @@ function Request(VideoID, NewElem, callback)
 	xhr.send(null);
 }
 
-function AddBar(VideoID, NewElem)
+function AddBar(VideoID, Elem)
 {
-    Request(VideoID, NewElem, function(rep, NewElem){
+    AjaxRequest(VideoID, Elem, function(rep, Elem){
         if(rep == null) return;
 
         var StatsElem = rep['entry']['yt$rating'];
@@ -46,10 +46,10 @@ function AddBar(VideoID, NewElem)
         var LikePourcent = Math.round(LikeCount * 100 / TotalRateCount);
         var DislikePourcent = 100 - LikePourcent;
 
-        NewElem.className = "YoutubeLikeBar";
-
-        NewElem.innerHTML += '<span style="height: 3px; float: left; background-color: green; width: '+LikePourcent+'%;"></span>';
-        NewElem.innerHTML += '<span style="height: 3px; float: left; background-color: red; width: '+DislikePourcent+'%;"></span>';
+        var BarStr = '<div style="margin-top: 5px; margin-left: 3px; background-color: red; height: 3px;">';
+        BarStr += '<div style="background-color: green; height: 100%; width: '+LikePourcent+'%;"></div>';
+        BarStr += '</div>';
+        Elem.innerHTML = BarStr;
     });
 }
 
@@ -66,7 +66,9 @@ else
     	var URLBegin = '/watch?v=';
     	var VideoID = URL.substr(URLBegin.length);
 
-        var NewElem = document.createElement('span');
+        var NewElem = document.createElement('div');
+        NewElem.className = 'YoutubeLikeBar';
+        NewElem.style.marginLeft = '125px';
         Elem.appendChild(NewElem);
 
         AddBar(VideoID, NewElem);
@@ -78,8 +80,9 @@ else
         var Elem = SearchResults[i];
         var VideoID = Elem.getAttribute('data-context-item-id');
 
-        var NewElem = document.createElement('span');
-        Elem.appendChild(NewElem);
+        var NewElem = document.createElement('div');
+        NewElem.className = 'YoutubeLikeBar';
+        Elem.getElementsByClassName('yt-lockup2-content')[0].appendChild(NewElem);
 
         AddBar(VideoID, NewElem);
     }
