@@ -57,8 +57,10 @@ if(document.getElementsByClassName('YoutubeLikeBar').length != 0)
     alert("YoutubeLikeBar à déjà été utilisé sur cette page");
 else
 {
+    var BarClassName = 'YoutubeLikeBar';
+
+    // Suggestions
     var RelatedVideos = document.getElementsByClassName('related-video');
-    
     for(var i = 0 ; i < RelatedVideos.length ; i++)
     {
     	var Elem = RelatedVideos[i];
@@ -67,13 +69,14 @@ else
     	var VideoID = URL.substr(URLBegin.length);
 
         var NewElem = document.createElement('div');
-        NewElem.className = 'YoutubeLikeBar';
+        NewElem.className = BarClassName;
         NewElem.style.marginLeft = '125px';
         Elem.appendChild(NewElem);
 
         AddBar(VideoID, NewElem);
     }
 
+    // Résultats de recherche
     var SearchResults = document.getElementsByClassName('yt-lockup2-video');
     for(var i = 0 ; i < SearchResults.length ; i++)
     {
@@ -81,8 +84,22 @@ else
         var VideoID = Elem.getAttribute('data-context-item-id');
 
         var NewElem = document.createElement('div');
-        NewElem.className = 'YoutubeLikeBar';
+        NewElem.className = BarClassName;
         Elem.getElementsByClassName('yt-lockup2-content')[0].appendChild(NewElem);
+
+        AddBar(VideoID, NewElem);
+    }
+
+    // Abonnements
+    var SubscriptionVideos = document.getElementsByClassName('feed-item-content-wrapper');
+    for(var i = 0 ; i < SubscriptionVideos.length ; i++)
+    {
+        var Elem = SubscriptionVideos[i];
+        var VideoID = Elem.getAttribute('data-context-item-id');
+
+        var NewElem = document.createElement('div');
+        NewElem.className = BarClassName;
+        Elem.getElementsByClassName('feed-item-content')[0].appendChild(NewElem);
 
         AddBar(VideoID, NewElem);
     }
