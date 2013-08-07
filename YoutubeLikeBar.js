@@ -36,6 +36,7 @@ function AjaxRequest(VideoID, NewElem, callback)
 
 function AddBar(VideoID, Elem)
 {
+    Elem.innerHTML = "<img src=\"http://s.ytimg.com/yts/img/icn_loading_animated-vflff1Mjj.gif\" alt=\"Loading...\"/>";
     AjaxRequest(VideoID, Elem, function(rep, Elem){
         if(rep == null) return;
 
@@ -77,7 +78,7 @@ else
     }
 
     // Résultats de recherche
-    var SearchResults = document.getElementsByClassName('yt-lockup2-video');
+    var SearchResults = document.getElementsByClassName('yt-lockup-video');
     for(var i = 0 ; i < SearchResults.length ; i++)
     {
         var Elem = SearchResults[i];
@@ -85,21 +86,21 @@ else
 
         var NewElem = document.createElement('div');
         NewElem.className = BarClassName;
-        Elem.getElementsByClassName('yt-lockup2-content')[0].appendChild(NewElem);
+        Elem.getElementsByClassName('yt-lockup-content')[0].appendChild(NewElem);
 
         AddBar(VideoID, NewElem);
     }
 
     // Abonnements
-    var SubscriptionVideos = document.getElementsByClassName('feed-item-content-wrapper');
+    var SubscriptionVideos = document.getElementsByClassName('feed-item-main-content');
     for(var i = 0 ; i < SubscriptionVideos.length ; i++)
     {
-        var Elem = SubscriptionVideos[i];
+        var Elem = SubscriptionVideos[i].children[0];
         var VideoID = Elem.getAttribute('data-context-item-id');
 
         var NewElem = document.createElement('div');
         NewElem.className = BarClassName;
-        Elem.getElementsByClassName('feed-item-content')[0].appendChild(NewElem);
+        Elem.getElementsByClassName('yt-lockup-content')[0].appendChild(NewElem);
 
         AddBar(VideoID, NewElem);
     }
