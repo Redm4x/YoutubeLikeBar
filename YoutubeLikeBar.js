@@ -77,25 +77,11 @@ else
         AddBar(VideoID, NewElem);
     }
 
-    // Résultats de recherche
-    var SearchResults = document.getElementsByClassName('yt-lockup-video');
-    for(var i = 0 ; i < SearchResults.length ; i++)
+    // Résultats de recherche et abonnements
+    var Videos = document.getElementsByClassName('yt-lockup-video');
+    for(var i = 0 ; i < Videos.length ; i++)
     {
-        var Elem = SearchResults[i];
-        var VideoID = Elem.getAttribute('data-context-item-id');
-
-        var NewElem = document.createElement('div');
-        NewElem.className = BarClassName;
-        Elem.getElementsByClassName('yt-lockup-content')[0].appendChild(NewElem);
-
-        AddBar(VideoID, NewElem);
-    }
-
-    // Abonnements
-    var SubscriptionVideos = document.getElementsByClassName('feed-item-main-content');
-    for(var i = 0 ; i < SubscriptionVideos.length ; i++)
-    {
-        var Elem = SubscriptionVideos[i].children[0];
+        var Elem = Videos[i];
         var VideoID = Elem.getAttribute('data-context-item-id');
 
         var NewElem = document.createElement('div');
