@@ -59,12 +59,13 @@ if(document.getElementsByClassName('YoutubeLikeBar').length != 0)
 else
 {
     var BarClassName = 'YoutubeLikeBar';
+    var Videos = new Array();
 
     // Suggestions
-    var RelatedVideos = document.getElementsByClassName('related-video');
-    for(var i = 0 ; i < RelatedVideos.length ; i++)
+    Videos = document.getElementsByClassName('related-video');
+    for(var i = 0 ; i < Videos.length ; i++)
     {
-    	var Elem = RelatedVideos[i];
+    	var Elem = Videos[i];
     	var URL = Elem.getAttribute('href');
     	var URLBegin = '/watch?v=';
     	var VideoID = URL.substr(URLBegin.length);
@@ -77,8 +78,22 @@ else
         AddBar(VideoID, NewElem);
     }
 
+    // Suggestions sur la page "À regarder"
+    Videos = document.getElementsByClassName('channels-content-item');
+    for(var i = 0 ; i < Videos.length ; i++)
+    {
+        var Elem = Videos[i];
+        var VideoID = Elem.getElementsByClassName('context-data-item')[0].getAttribute('data-context-item-id');
+
+        var NewElem = document.createElement('div');
+        NewElem.className = BarClassName;
+        Elem.getElementsByClassName('content-item-detail')[0].appendChild(NewElem);
+
+        AddBar(VideoID, NewElem);
+    }
+
     // Résultats de recherche et abonnements
-    var Videos = document.getElementsByClassName('yt-lockup-video');
+    Videos = document.getElementsByClassName('yt-lockup-video');
     for(var i = 0 ; i < Videos.length ; i++)
     {
         var Elem = Videos[i];
